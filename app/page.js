@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 export default function Home() {
   const [n, setN] = useState(5);
@@ -11,7 +11,7 @@ export default function Home() {
   const [isComplete, setIsComplete] = useState(false);
 
   // Initialize people array
-  const initializeGame = () => {
+  const initializeGame = useCallback(() => {
     const newPeople = Array.from({ length: n }, (_, i) => ({
       id: i + 1,
       alive: true,
@@ -25,7 +25,7 @@ export default function Home() {
     setCurrentStep(0);
     setIsPlaying(false);
     setIsComplete(false);
-  };
+  }, [n,k]);
 
   // Calculate all elimination steps
   const calculateSteps = (totalPeople, passes) => {
@@ -85,7 +85,7 @@ export default function Home() {
   // Initialize on mount and when n or k changes
   useEffect(() => {
     initializeGame();
-  }, [n, k]);
+  }, [initializeGame]);
 
   // Get current people state based on step
   const getCurrentPeople = () => {
